@@ -1,4 +1,4 @@
-# leafDetection_tensorflow
+# Leafdetection_tensorflow
 ![TensorFlow Logo](https://www.tensorflow.org/images/tf_logo_social.png)
 
 ## 概要 / Overview
