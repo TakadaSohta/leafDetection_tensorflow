@@ -411,4 +411,66 @@ const float training_features[NUM_TRAINING_SAMPLES][NUM_FEATURES] = {
 // 各サンプルのクラスラベル
 const int training_labels[NUM_TRAINING_SAMPLES] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
 
+// knn_predict 関数のプロトタイプ宣言
+int knn_predict(const float input_features[NUM_FEATURES]);
+
+// knn_predict 関数の実装
+// この関数は、入力特徴量と各トレーニングサンプルとのユークリッド距離を計算し、
+// K個の最小距離のサンプルのラベルを多数決で決定して予測クラスを返します。
+int knn_predict(const float input_features[NUM_FEATURES]) {
+    float distances[NUM_TRAINING_SAMPLES];
+    // 各サンプルとの距離を計算
+    for (int i = 0; i < NUM_TRAINING_SAMPLES; i++) {
+        float sum = 0.0f;
+        for (int j = 0; j < NUM_FEATURES; j++) {
+            float diff = input_features[j] - training_features[i][j];
+            sum += diff * diff;
+        }
+        distances[i] = sqrtf(sum);
+    }
+    
+    // K 個の最小距離のサンプルのインデックスを求める（非常に単純な実装）
+    int nearest_indices[K_VALUE];
+    for (int k = 0; k < K_VALUE; k++) {
+        nearest_indices[k] = -1;
+    }
+    for (int k = 0; k < K_VALUE; k++) {
+        int min_index = -1;
+        float min_distance = 1e12f;  // 十分大きな値
+        for (int i = 0; i < NUM_TRAINING_SAMPLES; i++) {
+            // 既に選ばれているサンプルはスキップ
+            bool already_selected = false;
+            for (int j = 0; j < k; j++) {
+                if (nearest_indices[j] == i) {
+                    already_selected = true;
+                    break;
+                }
+            }
+            if (already_selected) continue;
+            if (distances[i] < min_distance) {
+                min_distance = distances[i];
+                min_index = i;
+            }
+        }
+        nearest_indices[k] = min_index;
+    }
+    
+    // 多数決でクラスを決定
+    int votes[10] = {0}; // ここではクラス数は最大 10 と仮定
+    for (int k = 0; k < K_VALUE; k++) {
+        int label = training_labels[nearest_indices[k]];
+        votes[label]++;
+    }
+    
+    int predicted = 0;
+    int max_votes = 0;
+    for (int i = 0; i < 10; i++) {
+        if (votes[i] > max_votes) {
+            max_votes = votes[i];
+            predicted = i;
+        }
+    }
+    return predicted;
+}
+
 #endif // KNN_MODEL_H
