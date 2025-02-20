@@ -1,9 +1,6 @@
 # leafDetection_tensorflow
 ![TensorFlow Logo](https://www.tensorflow.org/images/tf_logo_social.png)
 
-# ESP32 TensorFlow Lite センサ分類プロジェクト  
-# ESP32 TensorFlow Lite Sensor Classification Project
-
 ## 概要 / Overview
 本プロジェクトは、複数のCSVファイルからセンサデータのピーク情報を抽出し、TensorFlow/Kerasを用いてニューラルネットワークを構築・学習するものです。  
 The project extracts peak information from sensor data stored in multiple CSV files and uses TensorFlow/Keras to build and train a neural network model.
