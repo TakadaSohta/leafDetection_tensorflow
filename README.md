@@ -53,7 +53,7 @@ The model then classifies the input data, and the classification results are use
   A script to convert the `.tflite` file into a C header file (`model.h`).
 
 - **Tensorflow.ino**  
-  ESP32/ESP32-S3向けのArduinoコード。ADCデータの取得、FFTによる特徴量抽出、TensorFlow Liteによる推論、NeoPixel LED制御を実装。  
+  ESP32/ESP32-S3向けのArduinoコード。ADCデータの取得、TensorFlow Liteによる推論、NeoPixel LED制御を実装。  
   Arduino code for ESP32/ESP32-S3. Implements ADC data acquisition, FFT-based feature extraction, TensorFlow Lite inference, and NeoPixel LED control.
 
 - **model.h**  
