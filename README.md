@@ -32,7 +32,7 @@ The model then classifies the input data, and the classification results are use
   Processes sensor data from the ADC via FFT, performs inference with the TensorFlow Lite model, and controls the NeoPixel LED based on the classification result.
 
 - **Modelの作成に関しては以下のColabを参考にしてください**
-- URL：https://colab.research.google.com/drive/1cXcK1S6Bp6tIH6z4TiKSWayCkn_2JPR2?usp=sharing
+  URL：https://colab.research.google.com/drive/1cXcK1S6Bp6tIH6z4TiKSWayCkn_2JPR2?usp=sharing
 
 
 ## ファイル構成 / File Structure
