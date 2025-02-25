@@ -24,14 +24,14 @@ The model then classifies the input data, and the classification results are use
   Trains a classification model using the extracted features (frequency and amplitude of peaks) with TensorFlow/Keras.
 
 - **TensorFlow Lite変換 / TensorFlow Lite Conversion**  
-  学習済みモデルをTensorFlow Lite形式に変換し、ESP32向けのヘッダーファイル（`model.h`）を生成。  
-  Converts the trained model to TensorFlow Lite format and generates a C header file (`model.h`) for ESP32.
+  学習済みモデルをTensorFlow Lite形式に変換し、ESP32向けのヘッダーファイル（model.h）を生成。  
+  Converts the trained model to TensorFlow Lite format and generates a C header file (model.h) for ESP32.
 
 - **ESP32での推論とLED制御 / Inference and LED Control on ESP32**  
   ADCからのセンサデータをFFTで処理し、TensorFlow Liteモデルにより分類。分類結果に応じたNeoPixel LED制御を実施。  
   Processes sensor data from the ADC via FFT, performs inference with the TensorFlow Lite model, and controls the NeoPixel LED based on the classification result.
 
-- **Modelの作成に関しては以下のColabを参考にしてください
+- **Modelの作成に関しては以下のColabを参考にしてください**
 - URL：https://colab.research.google.com/drive/1cXcK1S6Bp6tIH6z4TiKSWayCkn_2JPR2?usp=sharing
 
 
